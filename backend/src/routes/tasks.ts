@@ -1,4 +1,5 @@
 import { Router, Response } from "express";
+import { TaskStatus, Priority } from "@prisma/client";
 import { prisma } from "../lib/prisma";
 import { authenticate, AuthenticatedRequest } from "../middleware/authenticate";
 import { requireTaskAccess } from "../middleware/ownership";
@@ -7,8 +8,8 @@ import { formatActivityMessage } from "../lib/activityFeed";
 
 const router = Router();
 
-const VALID_STATUSES = ["TODO", "IN_PROGRESS", "IN_REVIEW", "DONE"];
-const VALID_PRIORITIES = ["LOW", "MEDIUM", "HIGH", "CRITICAL"];
+const VALID_STATUSES: TaskStatus[] = ["TODO", "IN_PROGRESS", "IN_REVIEW", "DONE"];
+const VALID_PRIORITIES: Priority[] = ["LOW", "MEDIUM", "HIGH", "CRITICAL"];
 
 router.patch(
   "/:taskId",
@@ -47,9 +48,9 @@ router.patch(
       title?: string;
       description?: string | null;
       assignedToId?: string;
-      priority?: string;
+      priority?: Priority;
       dueDate?: Date;
-      status?: string;
+      status?: TaskStatus;
       isOverdue?: boolean;
     } = {};
 
